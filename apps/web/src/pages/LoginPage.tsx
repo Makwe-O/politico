@@ -26,7 +26,7 @@ export function LoginPage() {
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     login.reset();
-    const parsed = LoginBody.safeParse({ ...values, email: values.email.trim() });
+    const parsed = LoginBody.safeParse(values);
     if (!parsed.success) {
       setErrors(fieldErrors(parsed.error));
       return;

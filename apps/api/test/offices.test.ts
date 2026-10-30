@@ -36,6 +36,11 @@ describe('offices routes', () => {
     expect(res.json()).toEqual({ status: 409, error: 'An office with that name already exists' });
   });
 
+  it('POST /offices 409s on a duplicate name that differs only by case', async () => {
+    const res = await create({ type: 'local', name: 'MAYOR, testville' });
+    expect(res.statusCode).toBe(409);
+  });
+
   it.each([
     ['an invalid type', { type: 'galactic', name: 'Emperor' }],
     ['a missing type', { name: 'Emperor' }],

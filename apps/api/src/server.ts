@@ -11,7 +11,8 @@ try {
 
 const config = loadConfig();
 const db = await openDb(config.DATA_DIR);
-await seedIfEmpty(db, config);
+// Demo data is for local dev only; a real deployment must never get fake candidates or seed logins.
+if (config.NODE_ENV !== 'production') await seedIfEmpty(db, config);
 
 const app = await buildApp({
   db,
@@ -20,10 +21,18 @@ const app = await buildApp({
   logger: { level: config.NODE_ENV === 'production' ? 'info' : 'debug' },
 });
 
+let closing = false;
 const shutdown = async () => {
-  await app.close();
-  await db.$client.close();
-  process.exit(0);
+  if (closing) return;
+  closing = true;
+  // Never hang a restart: a watcher would SIGKILL us and leave PGlite's files dirty.
+  setTimeout(() => process.exit(1), 4_000).unref();
+  try {
+    await app.close();
+  } finally {
+    await db.$client.close();
+    process.exit(0);
+  }
 };
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);

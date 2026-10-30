@@ -10,16 +10,16 @@ Start with the simplest thing that works, then add one capability (and one agent
 - [x] ESLint, Prettier, Vitest, GitHub Actions CI
 - [x] CLAUDE.md as the project's working agreement
 
-## Phase 1: MVP, the core election loop
+## Phase 1: MVP, the core election loop ✅
 
-- [ ] Sign up / log in / log out (JWT in an httpOnly cookie), roles `admin` and `voter`
-- [ ] Admin: create, edit and delete political parties
-- [ ] Admin: create political offices (federal / legislative / state / local)
-- [ ] Admin: register a user as a party's candidate for an office
-- [ ] Voter: one vote per office (enforced by the DB), clear error on a second attempt
-- [ ] Public results per office
-- [ ] Profile: offices I voted in and for whom
-- [ ] Seeded demo data on first boot
+- [x] Sign up / log in / log out (JWT in an httpOnly cookie), roles `admin` and `voter`
+- [x] Admin: create, edit and delete political parties
+- [x] Admin: create political offices (federal / legislative / state / local)
+- [x] Admin: register a user as a party's candidate for an office
+- [x] Voter: one vote per office (enforced by the DB), clear error on a second attempt
+- [x] Public results per office
+- [x] Profile: offices I voted in and for whom
+- [x] Seeded demo data on first boot
 
 ## Phase 2: Hardening
 
@@ -31,6 +31,11 @@ Start with the simplest thing that works, then add one capability (and one agent
 - [ ] Vote receipt (hash of vote id + timestamp + server secret)
 - [ ] Short-lived access token + rotating refresh token
 - [ ] Password reset (optional feature from the original spec)
+- [ ] Rate-limit `/auth/login` (`@fastify/rate-limit`) against password guessing
+- [ ] Server-side session revocation on logout (today a copied JWT stays valid for its 24h)
+- [ ] `authenticate` attaches the loaded user so `/auth/me` doesn't query it twice
+- [ ] Candidate registration: map FK violations to 404s instead of three pre-insert lookups
+- [ ] Confirm step before casting a vote (votes are irreversible)
 
 ## Phase 3: First AI feature, manifesto Q&A
 

@@ -55,6 +55,22 @@ describe('parties routes', () => {
       expect(res.json()).toEqual({ status: 409, error: 'A party with that name already exists' });
     });
 
+    it('409s on a duplicate name that differs only by case', async () => {
+      const res = await create({ name: 'LABOUR union', hqAddress: 'Elsewhere' });
+      expect(res.statusCode).toBe(409);
+      expect(res.json()).toEqual({ status: 409, error: 'A party with that name already exists' });
+    });
+
+    it('400s on a non-http(s) logo URL', async () => {
+      const res = await create({
+        name: 'Script Party',
+        hqAddress: '1 Hack Lane',
+        logoUrl: 'javascript:alert(1)',
+      });
+      expect(res.statusCode).toBe(400);
+      expect(res.json().error).toMatch(/logoUrl/);
+    });
+
     it.each([
       ['a short name', { name: 'A', hqAddress: '5 Workers Way' }],
       ['a missing address', { name: 'No Address' }],

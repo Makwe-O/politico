@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import {
   foreignKey,
   index,
@@ -7,6 +8,7 @@ import {
   text,
   timestamp,
   unique,
+  uniqueIndex,
 } from 'drizzle-orm/pg-core';
 
 export const roleEnum = pgEnum('role', ['admin', 'voter']);
@@ -24,20 +26,29 @@ export const users = pgTable('users', {
   createdAt: createdAt(),
 });
 
-export const parties = pgTable('parties', {
-  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-  name: text('name').notNull().unique(),
-  hqAddress: text('hq_address').notNull(),
-  logoUrl: text('logo_url'),
-  createdAt: createdAt(),
-});
+// Names are unique case-insensitively, so "Labour Union" and "labour union" can't both exist.
+export const parties = pgTable(
+  'parties',
+  {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    name: text('name').notNull(),
+    hqAddress: text('hq_address').notNull(),
+    logoUrl: text('logo_url'),
+    createdAt: createdAt(),
+  },
+  (t) => [uniqueIndex('parties_name_lower_uq').on(sql`lower(${t.name})`)],
+);
 
-export const offices = pgTable('offices', {
-  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-  type: officeTypeEnum('type').notNull(),
-  name: text('name').notNull().unique(),
-  createdAt: createdAt(),
-});
+export const offices = pgTable(
+  'offices',
+  {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    type: officeTypeEnum('type').notNull(),
+    name: text('name').notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [uniqueIndex('offices_name_lower_uq').on(sql`lower(${t.name})`)],
+);
 
 /** A party's flag bearer for an office. One candidate per (office, user) and per (office, party). */
 export const candidates = pgTable(

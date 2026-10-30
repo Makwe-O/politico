@@ -91,6 +91,15 @@ describe('auth routes', () => {
       expect(cookieFrom(res.headers['set-cookie'])).toMatch(new RegExp(`^${AUTH_COOKIE}=.+`));
     });
 
+    it('ignores surrounding whitespace in the email', async () => {
+      const res = await ctx.app.inject({
+        method: 'POST',
+        url: url('/auth/login'),
+        payload: { email: '  Login@Example.test ', password: DEFAULT_PASSWORD },
+      });
+      expect(res.statusCode).toBe(200);
+    });
+
     it('401s on a wrong password and an unknown email with the same message', async () => {
       const wrong = await ctx.app.inject({
         method: 'POST',

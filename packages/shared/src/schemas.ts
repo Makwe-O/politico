@@ -13,7 +13,9 @@ const MAX_ID = 2_147_483_647;
 const Id = z.number().int().positive().max(MAX_ID);
 const Timestamp = z.string(); // ISO 8601, e.g. "2026-10-30T10:00:00.000Z"
 const Name = z.string().trim().min(1, 'Required').max(100);
-const Email = z.email('Enter a valid email address').toLowerCase();
+const Email = z.string().trim().toLowerCase().pipe(z.email('Enter a valid email address'));
+/** Logos are rendered for every visitor, so only allow plain http(s) image URLs. */
+const LogoUrl = z.url({ protocol: /^https?$/, error: 'Enter a valid http(s) URL' });
 
 /** Route params like `/parties/:id`. */
 export const IdParams = z.object({ id: z.coerce.number().int().positive().max(MAX_ID) });
@@ -109,7 +111,7 @@ export type LoginBody = z.infer<typeof LoginBody>;
 export const CreatePartyBody = z.object({
   name: z.string().trim().min(2, 'At least 2 characters').max(120),
   hqAddress: z.string().trim().min(2, 'At least 2 characters').max(200),
-  logoUrl: z.url('Enter a valid URL').optional(),
+  logoUrl: LogoUrl.optional(),
 });
 export type CreatePartyBody = z.infer<typeof CreatePartyBody>;
 
@@ -118,7 +120,7 @@ export const UpdatePartyBody = z
   .object({
     name: CreatePartyBody.shape.name.optional(),
     hqAddress: CreatePartyBody.shape.hqAddress.optional(),
-    logoUrl: z.url('Enter a valid URL').nullable().optional(),
+    logoUrl: LogoUrl.nullable().optional(),
   })
   .refine((b) => Object.values(b).some((v) => v !== undefined), 'Provide at least one field');
 export type UpdatePartyBody = z.infer<typeof UpdatePartyBody>;

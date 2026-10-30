@@ -33,7 +33,11 @@ export interface AppOptions {
 }
 
 export async function buildApp(opts: AppOptions) {
-  const app = Fastify({ logger: opts.logger ?? false }).withTypeProvider<ZodTypeProvider>();
+  const app = Fastify({
+    logger: opts.logger ?? false,
+    // Drop keep-alive/polling connections on close so shutdown (and dev restarts) are immediate.
+    forceCloseConnections: true,
+  }).withTypeProvider<ZodTypeProvider>();
 
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);

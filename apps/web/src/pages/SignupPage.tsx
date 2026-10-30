@@ -28,7 +28,7 @@ export function SignupPage() {
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     signup.reset();
-    const parsed = SignupBody.safeParse({ ...values, email: values.email.trim() });
+    const parsed = SignupBody.safeParse(values);
     if (!parsed.success) {
       setErrors(fieldErrors(parsed.error));
       return;
