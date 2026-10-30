@@ -8,13 +8,15 @@ export type Role = z.infer<typeof Role>;
 export const OfficeType = z.enum(['federal', 'legislative', 'state', 'local']);
 export type OfficeType = z.infer<typeof OfficeType>;
 
-const Id = z.number().int().positive();
+/** Postgres `integer` max. Bounding ids keeps oversized values a 400, not a DB error. */
+const MAX_ID = 2_147_483_647;
+const Id = z.number().int().positive().max(MAX_ID);
 const Timestamp = z.string(); // ISO 8601, e.g. "2026-10-30T10:00:00.000Z"
 const Name = z.string().trim().min(1, 'Required').max(100);
 const Email = z.email('Enter a valid email address').toLowerCase();
 
 /** Route params like `/parties/:id`. */
-export const IdParams = z.object({ id: z.coerce.number().int().positive() });
+export const IdParams = z.object({ id: z.coerce.number().int().positive().max(MAX_ID) });
 export type IdParams = z.infer<typeof IdParams>;
 
 export const Message = z.object({ message: z.string() });

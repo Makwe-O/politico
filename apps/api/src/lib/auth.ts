@@ -1,8 +1,10 @@
 import fastifyCookie, { type CookieSerializeOptions } from '@fastify/cookie';
 import fastifyJwt from '@fastify/jwt';
 import bcrypt from 'bcryptjs';
+import { eq } from 'drizzle-orm';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import type { Role } from '@politico/shared';
+import { users } from '../db/schema';
 import { HttpError } from './http';
 
 export const AUTH_COOKIE = 'politico_token';
@@ -23,7 +25,10 @@ declare module '@fastify/jwt' {
 
 declare module 'fastify' {
   interface FastifyInstance {
-    /** onRequest hook: 401 unless the request carries a valid session cookie. Sets `req.user`. */
+    /**
+     * onRequest hook: 401 unless the request carries a valid session cookie for a user that
+     * still exists. Sets `req.user`, with the role read fresh from the database.
+     */
     authenticate: (req: FastifyRequest) => Promise<void>;
     authCookieOptions: CookieSerializeOptions;
   }
@@ -55,6 +60,14 @@ export async function registerAuth(
     } catch {
       throw new HttpError(401, 'Authentication required');
     }
+    // Don't trust the role baked into the token: a demoted or deleted user loses access now,
+    // not when the token expires.
+    const [row] = await app.db
+      .select({ role: users.role })
+      .from(users)
+      .where(eq(users.id, req.user.id));
+    if (!row) throw new HttpError(401, 'Authentication required');
+    req.user = { id: req.user.id, role: row.role };
   });
 }
 
