@@ -1,0 +1,47 @@
+import Fastify, { type FastifyServerOptions } from 'fastify';
+import {
+  serializerCompiler,
+  validatorCompiler,
+  type ZodTypeProvider,
+} from 'fastify-type-provider-zod';
+import { API_PREFIX } from '@politico/shared';
+import type { Db } from './db/client';
+import { errorHandler } from './lib/errors';
+import { healthRoutes } from './routes/health';
+
+declare module 'fastify' {
+  interface FastifyInstance {
+    db: Db;
+  }
+}
+
+export interface AppOptions {
+  db: Db;
+  jwtSecret: string;
+  /** Set `Secure` on the auth cookie. True in production (HTTPS). */
+  secureCookies?: boolean;
+  logger?: FastifyServerOptions['logger'];
+}
+
+export async function buildApp(opts: AppOptions) {
+  const app = Fastify({ logger: opts.logger ?? false }).withTypeProvider<ZodTypeProvider>();
+
+  app.setValidatorCompiler(validatorCompiler);
+  app.setSerializerCompiler(serializerCompiler);
+  app.setErrorHandler(errorHandler);
+  app.setNotFoundHandler((_req, reply) =>
+    reply.code(404).send({ status: 404, error: 'Route not found' }),
+  );
+  app.decorate('db', opts.db);
+
+  await app.register(
+    async (api) => {
+      await api.register(healthRoutes);
+    },
+    { prefix: API_PREFIX },
+  );
+
+  return app;
+}
+
+export type App = Awaited<ReturnType<typeof buildApp>>;
