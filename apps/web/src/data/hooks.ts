@@ -184,7 +184,10 @@ export function useMyVotes({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({ queryKey: queryKeys.myVotes, queryFn: endpoints.listMyVotes, enabled });
 }
 
-/** Refreshes my votes and the office's results on success, and on a 409 (stale UI). */
+/**
+ * Refreshes my votes and the office's results on success, and on a 409 (the UI was stale).
+ * A 401 means the session expired, so re-check `me` and the page flips to "Log in to vote".
+ */
 export function useCastVote(officeId: number) {
   const qc = useQueryClient();
   const refresh = () =>
@@ -196,7 +199,9 @@ export function useCastVote(officeId: number) {
     mutationFn: (body: CastVoteBody) => endpoints.castVote(body),
     onSuccess: refresh,
     onError: (err) => {
-      if (err instanceof ApiError && err.status === 409) void refresh();
+      if (!(err instanceof ApiError)) return;
+      if (err.status === 409) void refresh();
+      if (err.status === 401) void qc.invalidateQueries({ queryKey: queryKeys.me });
     },
   });
 }
