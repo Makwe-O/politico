@@ -10,6 +10,8 @@ import { registerAuth } from './lib/auth';
 import { errorHandler } from './lib/errors';
 import { authRoutes } from './routes/auth';
 import { healthRoutes } from './routes/health';
+import { officeRoutes } from './routes/offices';
+import { partyRoutes } from './routes/parties';
 import { userRoutes } from './routes/users';
 
 declare module 'fastify' {
@@ -46,6 +48,8 @@ export async function buildApp(opts: AppOptions) {
       await api.register(healthRoutes);
       await api.register(authRoutes);
       await api.register(userRoutes);
+      await api.register(partyRoutes);
+      await api.register(officeRoutes);
     },
     { prefix: API_PREFIX },
   );
