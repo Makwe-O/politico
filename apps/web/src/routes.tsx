@@ -1,6 +1,7 @@
 import type { RouteObject } from 'react-router';
-import { RequireAuth } from './components/guards';
+import { RequireAdmin, RequireAuth } from './components/guards';
 import { Layout } from './components/Layout';
+import { AdminPage } from './pages/admin/AdminPage';
 import { LoginPage } from './pages/LoginPage';
 import { ErrorPage, NotFoundPage } from './pages/NotFoundPage';
 import { OfficePage } from './pages/OfficePage';
@@ -26,6 +27,7 @@ export const routes: RouteObject[] = [
           { path: 'login', element: <LoginPage /> },
           { path: 'signup', element: <SignupPage /> },
           { element: <RequireAuth />, children: [{ path: 'profile', element: <ProfilePage /> }] },
+          { element: <RequireAdmin />, children: [{ path: 'admin', element: <AdminPage /> }] },
           { path: '*', element: <NotFoundPage /> },
         ],
       },
