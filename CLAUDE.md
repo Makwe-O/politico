@@ -4,14 +4,14 @@ A civic election platform. Admins (electoral body) manage parties, offices and c
 
 ## Commands (run from the repo root)
 
-| Command | What it does |
-|---|---|
-| `pnpm dev` | API on :3001 + web on :5173 (Vite proxies `/api` to the API) |
-| `pnpm test` | Vitest in every package |
-| `pnpm lint` / `pnpm format` | ESLint / Prettier |
-| `pnpm typecheck` | `tsc` in every package |
-| `pnpm db:generate` | Generate a SQL migration after editing `apps/api/src/db/schema.ts` |
-| `pnpm db:reset` | Delete the local PGlite data dir (it re-migrates and re-seeds on the next boot) |
+| Command                     | What it does                                                                    |
+| --------------------------- | ------------------------------------------------------------------------------- |
+| `pnpm dev`                  | API on :3001 + web on :5180 (Vite proxies `/api` to the API)                    |
+| `pnpm test`                 | Vitest in every package                                                         |
+| `pnpm lint` / `pnpm format` | ESLint / Prettier                                                               |
+| `pnpm typecheck`            | `tsc` in every package                                                          |
+| `pnpm db:generate`          | Generate a SQL migration after editing `apps/api/src/db/schema.ts`              |
+| `pnpm db:reset`             | Delete the local PGlite data dir (it re-migrates and re-seeds on the next boot) |
 
 Single test file: `pnpm --filter @politico/api exec vitest run test/votes.test.ts`.
 
