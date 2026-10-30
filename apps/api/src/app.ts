@@ -9,10 +9,14 @@ import type { Db } from './db/client';
 import { registerAuth } from './lib/auth';
 import { errorHandler } from './lib/errors';
 import { authRoutes } from './routes/auth';
+import { candidateRoutes } from './routes/candidates';
 import { healthRoutes } from './routes/health';
+import { meRoutes } from './routes/me';
 import { officeRoutes } from './routes/offices';
 import { partyRoutes } from './routes/parties';
+import { resultRoutes } from './routes/results';
 import { userRoutes } from './routes/users';
+import { voteRoutes } from './routes/votes';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -50,6 +54,10 @@ export async function buildApp(opts: AppOptions) {
       await api.register(userRoutes);
       await api.register(partyRoutes);
       await api.register(officeRoutes);
+      await api.register(candidateRoutes);
+      await api.register(resultRoutes);
+      await api.register(voteRoutes);
+      await api.register(meRoutes);
     },
     { prefix: API_PREFIX },
   );
