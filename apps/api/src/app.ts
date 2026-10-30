@@ -8,7 +8,9 @@ import { API_PREFIX } from '@politico/shared';
 import type { Db } from './db/client';
 import { registerAuth } from './lib/auth';
 import { errorHandler } from './lib/errors';
+import { authRoutes } from './routes/auth';
 import { healthRoutes } from './routes/health';
+import { userRoutes } from './routes/users';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -42,7 +44,8 @@ export async function buildApp(opts: AppOptions) {
   await app.register(
     async (api) => {
       await api.register(healthRoutes);
-      // Phase 1 route plugins are registered here.
+      await api.register(authRoutes);
+      await api.register(userRoutes);
     },
     { prefix: API_PREFIX },
   );
