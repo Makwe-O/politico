@@ -14,6 +14,7 @@ declare module 'fastify' {
     db: Db;
   }
 }
+``;
 
 export interface AppOptions {
   db: Db;

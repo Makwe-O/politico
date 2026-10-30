@@ -2,7 +2,10 @@
 
 [![CI](https://github.com/Makwe-O/politico/actions/workflows/ci.yml/badge.svg)](https://github.com/Makwe-O/politico/actions/workflows/ci.yml)
 
-A platform where citizens vote for politicians running for government offices, built for transparency. It started as the Andela "Politico" challenge and is being modernized with React, TypeScript, Fastify and Postgres, then AI features (manifesto Q&A, moderation, petition triage) built with Claude.
+The general elections are around corner, hence it’s a political season. Get into the mood of the
+season and help build a platform which both the politicians and citizens can use.
+Politico enables citizens give their mandate to politicians running for different government offices
+while building trust in the process through transparency.
 
 ## Quick start
 
@@ -16,11 +19,11 @@ Open http://localhost:5173. The database is [PGlite](https://pglite.dev) (Postgr
 
 ## Stack
 
-| Layer | Tech |
-|---|---|
-| Web | Vite, React 19, React Router, TanStack Query |
-| API | Fastify 5, Zod (shared contract), JWT cookie auth |
-| DB | Postgres via PGlite + Drizzle ORM |
+| Layer   | Tech                                                 |
+| ------- | ---------------------------------------------------- |
+| Web     | Vite, React 19, React Router, TanStack Query         |
+| API     | Fastify 5, Zod (shared contract), JWT cookie auth    |
+| DB      | Postgres via PGlite + Drizzle ORM                    |
 | Quality | TypeScript, ESLint, Prettier, Vitest, GitHub Actions |
 
 ## Docs

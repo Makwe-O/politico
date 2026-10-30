@@ -23,12 +23,12 @@ Each entry records the pattern, why it was used, and what actually happened.
 
 Use the simplest rung that works:
 
-| Rung | What it is | Politico feature |
-|---|---|---|
-| Single call | One prompt, one answer | Manifesto Q&A with citations (Phase 3) |
-| Routing | Classify, then send to a handler | Moderation (Phase 4) |
-| Parallelization | Fan out independent calls, merge | Stance matrix per category (Phase 4) |
-| Prompt chaining | Fixed sequence of steps, each feeding the next | Petition analyzer (Phase 4) |
-| Agent | Model picks tools in a loop until done | "Ask Politico" (Phase 4) |
+| Rung            | What it is                                     | Politico feature                       |
+| --------------- | ---------------------------------------------- | -------------------------------------- |
+| Single call     | One prompt, one answer                         | Manifesto Q&A with citations (Phase 3) |
+| Routing         | Classify, then send to a handler               | Moderation (Phase 4)                   |
+| Parallelization | Fan out independent calls, merge               | Stance matrix per category (Phase 4)   |
+| Prompt chaining | Fixed sequence of steps, each feeding the next | Petition analyzer (Phase 4)            |
+| Agent           | Model picks tools in a loop until done         | "Ask Politico" (Phase 4)               |
 
 Workflows (rungs 1 to 4) are code-controlled and predictable. Agents trade predictability for flexibility, so reach for one only when the steps genuinely can't be known in advance.
