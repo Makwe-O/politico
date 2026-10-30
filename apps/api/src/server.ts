@@ -1,6 +1,7 @@
 import { buildApp } from './app';
 import { loadConfig } from './config';
 import { openDb } from './db/client';
+import { seedIfEmpty } from './db/seed';
 
 try {
   process.loadEnvFile();
@@ -10,6 +11,7 @@ try {
 
 const config = loadConfig();
 const db = await openDb(config.DATA_DIR);
+await seedIfEmpty(db, config);
 
 const app = await buildApp({
   db,
