@@ -16,11 +16,11 @@ Open http://localhost:5173. The database is [PGlite](https://pglite.dev) (Postgr
 
 ## Stack
 
-| Layer | Tech |
-|---|---|
-| Web | Vite, React 19, React Router, TanStack Query |
-| API | Fastify 5, Zod (shared contract), JWT cookie auth |
-| DB | Postgres via PGlite + Drizzle ORM |
+| Layer   | Tech                                                 |
+| ------- | ---------------------------------------------------- |
+| Web     | Vite, React 19, React Router, TanStack Query         |
+| API     | Fastify 5, Zod (shared contract), JWT cookie auth    |
+| DB      | Postgres via PGlite + Drizzle ORM                    |
 | Quality | TypeScript, ESLint, Prettier, Vitest, GitHub Actions |
 
 ## Docs
