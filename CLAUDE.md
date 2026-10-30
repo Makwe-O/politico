@@ -6,7 +6,7 @@ A civic election platform. Admins (electoral body) manage parties, offices and c
 
 | Command                     | What it does                                                                    |
 | --------------------------- | ------------------------------------------------------------------------------- |
-| `pnpm dev`                  | API on :3001 + web on :5173 (Vite proxies `/api` to the API)                    |
+| `pnpm dev`                  | API on :3001 + web on :5180 (Vite proxies `/api` to the API)                    |
 | `pnpm test`                 | Vitest in every package                                                         |
 | `pnpm lint` / `pnpm format` | ESLint / Prettier                                                               |
 | `pnpm typecheck`            | `tsc` in every package                                                          |

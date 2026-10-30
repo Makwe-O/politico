@@ -81,11 +81,19 @@ export function useSignup() {
   });
 }
 
-export function useLogout() {
+/**
+ * `leave` runs (and is awaited) before the session is cleared. Navigate away from guarded
+ * pages there: if the session cleared first, the guard would redirect to /login?next=… and win
+ * the race against the caller's own navigation.
+ */
+export function useLogout(leave?: () => void | Promise<void>) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: () => endpoints.logout(),
-    onSuccess: () => setSession(qc, null),
+    onSuccess: async () => {
+      await leave?.();
+      await setSession(qc, null);
+    },
   });
 }
 

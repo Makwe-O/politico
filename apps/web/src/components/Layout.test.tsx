@@ -47,4 +47,21 @@ describe('Layout header', () => {
     expect(queryClient.getQueryData(queryKeys.me)).toBeNull();
     expect(queryClient.getQueryData(queryKeys.myVotes)).toBeUndefined();
   });
+
+  it('logs out from a guarded page and lands home, not on the login redirect', async () => {
+    mockApi({
+      'GET /auth/me': ok([admin]),
+      'GET /parties': ok([]),
+      'GET /offices': ok([]),
+      'GET /users': ok([]),
+      'POST /auth/logout': ok([{ message: 'Logged out' }]),
+    });
+    const { user, router } = renderWithProviders('/admin');
+    const header = within(screen.getByRole('banner'));
+    await user.click(await header.findByRole('button', { name: 'Log out' }));
+
+    expect(await header.findByRole('link', { name: 'Log in' })).toBeInTheDocument();
+    await waitFor(() => expect(router.state.location.pathname).toBe('/'));
+    expect(router.state.location.search).toBe('');
+  });
 });

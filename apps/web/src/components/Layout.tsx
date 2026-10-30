@@ -4,8 +4,8 @@ import { Banner } from './Banner';
 
 export function Layout() {
   const { data: me, isPending } = useMe();
-  const logout = useLogout();
   const navigate = useNavigate();
+  const logout = useLogout(() => navigate('/', { replace: true }));
 
   return (
     <>
@@ -50,12 +50,7 @@ export function Layout() {
                     type="button"
                     className="link-button"
                     disabled={logout.isPending}
-                    // replace: a guarded page may already have redirected to /login?next=…
-                    onClick={() =>
-                      logout.mutate(undefined, {
-                        onSuccess: () => navigate('/', { replace: true }),
-                      })
-                    }
+                    onClick={() => logout.mutate()}
                   >
                     Log out
                   </button>

@@ -12,7 +12,7 @@ cp apps/api/.env.example apps/api/.env
 pnpm dev
 ```
 
-Open http://localhost:5173. The database is [PGlite](https://pglite.dev) (Postgres running in-process), so there's nothing else to install. It's created and seeded on first boot. Dev-only demo logins are in `apps/api/.env.example`.
+Open http://localhost:5180. The database is [PGlite](https://pglite.dev) (Postgres running in-process), so there's nothing else to install. It's created and seeded on first boot. Dev-only demo logins are in `apps/api/.env.example`.
 
 ## Stack
 
