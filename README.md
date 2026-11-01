@@ -31,3 +31,7 @@ Open http://localhost:5173. The database is [PGlite](https://pglite.dev) (Postgr
 - [Roadmap](docs/ROADMAP.md): phases from MVP to AI features
 - [API](docs/API.md): endpoints and response envelope
 - [Agentic workflows log](docs/AGENTIC.md): how this is being built with (and will include) AI agents
+
+## License
+
+[MIT](LICENSE)
