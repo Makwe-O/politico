@@ -1,23 +1,18 @@
-import { useEffect, useState } from 'react';
-import type { Health } from '@politico/shared';
-import { api } from './api';
+import { Route, Routes } from 'react-router';
+import { Layout } from './components/Layout';
+import { HomePage } from './pages/HomePage';
+import { LoginPage } from './pages/LoginPage';
+import { SignupPage } from './pages/SignupPage';
 
+/** The route tree. Providers (router, query client) are added in main.tsx and in tests. */
 export function App() {
-  const [health, setHealth] = useState<Health | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    api<Health>('/health')
-      .then(([h]) => setHealth(h ?? null))
-      .catch((e: Error) => setError(e.message));
-  }, []);
-
   return (
-    <main className="container">
-      <h1>Politico</h1>
-      <p>Transparent elections for citizens and politicians.</p>
-      {health && <p className="banner banner-success">API is up ({health.time})</p>}
-      {error && <p className="banner banner-error">API unreachable: {error}</p>}
-    </main>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="signup" element={<SignupPage />} />
+      </Route>
+    </Routes>
   );
 }

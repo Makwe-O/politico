@@ -6,7 +6,9 @@ import {
 } from 'fastify-type-provider-zod';
 import { API_PREFIX } from '@politico/shared';
 import type { Db } from './db/client';
+import { registerAuth } from './lib/auth';
 import { errorHandler } from './lib/errors';
+import { authRoutes } from './routes/auth';
 import { healthRoutes } from './routes/health';
 
 declare module 'fastify' {
@@ -14,7 +16,6 @@ declare module 'fastify' {
     db: Db;
   }
 }
-``;
 
 export interface AppOptions {
   db: Db;
@@ -34,10 +35,15 @@ export async function buildApp(opts: AppOptions) {
     reply.code(404).send({ status: 404, error: 'Route not found' }),
   );
   app.decorate('db', opts.db);
+  await registerAuth(app, {
+    jwtSecret: opts.jwtSecret,
+    secureCookies: opts.secureCookies ?? false,
+  });
 
   await app.register(
     async (api) => {
       await api.register(healthRoutes);
+      await api.register(authRoutes);
     },
     { prefix: API_PREFIX },
   );
