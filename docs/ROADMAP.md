@@ -12,7 +12,7 @@ Start with the simplest thing that works, then add one capability (and one agent
 
 ## Phase 1: MVP, the core election loop
 
-- [ ] Sign up / log in / log out (JWT in an httpOnly cookie), roles `admin` and `voter`
+- [x] Sign up / log in / log out (JWT in an httpOnly cookie), roles `admin` and `voter`
 - [ ] Admin: create, edit and delete political parties
 - [ ] Admin: create political offices (federal / legislative / state / local)
 - [ ] Admin: register a user as a party's candidate for an office
